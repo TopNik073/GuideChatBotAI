@@ -7,6 +7,7 @@ from alembic import context
 
 from source.database.models.Base import Base
 from source.database.models.user import Users
+from source.database.models.attractions import Attractions
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -1,5 +1,3 @@
-from email.policy import default
-
 from source.database.models.Base import Base
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import JSONB
