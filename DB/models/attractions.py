@@ -1,5 +1,5 @@
 from DB.models.Base import Base
-from sqlalchemy import Index
+from sqlalchemy import Index, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import JSONB, TSVECTOR
 
@@ -14,7 +14,7 @@ class Attractions(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     name: Mapped[str] = mapped_column(nullable=True)
-    description: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
     url: Mapped[str] = mapped_column(nullable=True)
     image: Mapped[str] = mapped_column(nullable=True)
     location: Mapped[str] = mapped_column(nullable=True)
