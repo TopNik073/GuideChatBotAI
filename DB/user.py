@@ -19,7 +19,7 @@ class User:
         self.username: str | None = username
 
         self.context: list[dict] = []
-        self.available_trips: int = 0
+        self.available_trips: int = 1
 
         self.created_at: datetime | None = None
         self.updated_at: datetime | None = None

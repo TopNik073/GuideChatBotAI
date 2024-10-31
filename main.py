@@ -1,6 +1,7 @@
 import os
 from functools import partial
 
+from black.lines import append_leaves
 from telegram import Update, ReplyKeyboardRemove
 from telegram.constants import ChatAction
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters, CommandHandler
@@ -54,6 +55,8 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE, gg
 
 if __name__ == "__main__":
     application = ApplicationBuilder().token(os.environ.get("BOT_TOKEN")).build()
+
+
 
     msg_handler = MessageHandler(filters.TEXT & ~filters.COMMAND, partial(message_handler, gg=GG))
     start_handler = CommandHandler("start", start)
