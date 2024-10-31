@@ -30,7 +30,8 @@ class SessionMaker(DataBaseConfig, metaclass=Singleton):
             f"{self.DB_PASS}@"
             f"{self.DB_HOST}:"
             f"{self.DB_PORT}/"
-            f"{self.DB_NAME}",
+            f"{self.DB_NAME}"
+            f"?client_encoding=utf8",
             echo=echo,
         )
         self.session_factory = sessionmaker(self.engine, expire_on_commit=False)

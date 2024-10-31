@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-IS_PROD = os.environ.get("IS_PROD") == "1"
 
 
 class DataBaseConfig:

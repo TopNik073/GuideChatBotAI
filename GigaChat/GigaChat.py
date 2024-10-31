@@ -19,13 +19,13 @@ class GigaChat:
     def get_token(self):
         try:
             response = requests.post(
-                url='https://ngw.devices.sberbank.ru:9443/api/v2/oauth',
+                url="https://ngw.devices.sberbank.ru:9443/api/v2/oauth",
                 headers={
-                    'Authorization': f'Bearer {os.environ.get("MASTER_TOKEN")}',
-                    'RqUID': str(uuid.uuid4()),
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    "Authorization": f'Bearer {os.environ.get("MASTER_TOKEN")}',
+                    "RqUID": str(uuid.uuid4()),
+                    "Content-Type": "application/x-www-form-urlencoded",
                 },
-                data={'scope': 'GIGACHAT_API_CORP'},
+                data={"scope": "GIGACHAT_API_CORP"},
                 verify=False,
             )
 
@@ -42,7 +42,7 @@ class GigaChat:
         except Exception as e:
             raise e
 
-    def generate_answer(self, content):
+    async def generate_answer(self, content):
         try:
             if not self.is_token_valid():
                 self.get_token()
@@ -50,23 +50,29 @@ class GigaChat:
             response = requests.post(
                 url="https://gigachat.devices.sberbank.ru/api/v1/chat/completions",
                 headers={
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': f'Bearer {self.access_token}'
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": f"Bearer {self.access_token}",
                 },
-                data=json.dumps({
-                    "model": "GigaChat",
-                    "messages": content,
-                    "stream": False,
-                    "repetition_penalty": 1,
-                }),
-                verify=False
+                data=json.dumps(
+                    {
+                        "model": "GigaChat-Pro",
+                        "messages": content,
+                        "stream": False,
+                        "repetition_penalty": 1,
+                        "temperature": 0.1,
+                        "top_p": 0.1,
+                    }
+                ),
+                verify=False,
             )
 
             if response.status_code != 200:
                 raise BaseException(f"Can't generate answer. Status code {response.status_code}")
 
-            return response.json()["choices"][0]["message"]
+            response = response.json()
+
+            return response["choices"][0]["message"]
 
         except Exception as e:
             raise e
@@ -80,11 +86,6 @@ class GigaChat:
 
 if __name__ == "__main__":
     gg = GigaChat()
-    cnt = [
-        {
-            "role": "user",
-            "content": "Привет, как твои дела?"
-        }
-    ]
+    cnt = [{"role": "user", "content": "Привет, как твои дела?"}]
     res = gg.generate_answer(cnt)
     print(res)

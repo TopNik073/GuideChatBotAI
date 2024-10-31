@@ -1,9 +1,17 @@
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
 from DB.DataBase import SessionMaker
+from DB.models.user import Users
 from datetime import datetime
 
 
-class User(SessionMaker):
-    def __init__(self, id: int, firstname: str = None, surname: str = None, username: str | None = None):
+class User:
+    model = Users
+
+    def __init__(
+        self, id: int, firstname: str = None, surname: str = None, username: str | None = None
+    ):
         self.id: int = id
 
         self.firstname: str | None = firstname
@@ -11,11 +19,12 @@ class User(SessionMaker):
         self.username: str | None = username
 
         self.context: list[dict] = []
+        self.available_trips: int = 0
 
-        self.created_at: datetime = None
-        self.updated_at: datetime = None
+        self.created_at: datetime | None = None
+        self.updated_at: datetime | None = None
 
-        super().__init__()
+        self.session_factory: sessionmaker = SessionMaker().session_factory
 
         self.add_user()
 
@@ -28,11 +37,11 @@ class User(SessionMaker):
 
             return self
 
-        except IntegrityError as e:
+        except IntegrityError:
             session.rollback()
             user = self.get()
             if user is None:
-                raise e
+                raise BaseException("Can't add user")
 
             return self
 
@@ -56,6 +65,10 @@ class User(SessionMaker):
                 if user.context is not None:
                     self.context = user.context
 
+                self.available_trips = (
+                    user.available_trips if user.available_trips is not None else 1
+                )
+
                 self.created_at = user.created_at
                 self.updated_at = user.updated_at
 
@@ -67,9 +80,7 @@ class User(SessionMaker):
     def update(self):
         try:
             with self.session_factory() as session:
-                session.query(self.model).filter_by(id=self.id).update(
-                    self.get_data_dict()
-                )
+                session.query(self.model).filter_by(id=self.id).update(self.get_data_dict())
                 session.commit()
 
             return self
@@ -98,4 +109,5 @@ class User(SessionMaker):
             "surname": self.surname,
             "username": self.username,
             "context": self.context,
+            "available_trips": self.available_trips,
         }

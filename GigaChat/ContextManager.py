@@ -9,16 +9,19 @@ class ContextManager(Prompts):
         super().__init__()
 
     def add_message(self, role, text):
-        message = {"role": role, "text": text}
+        message = {"role": role, "content": text}
 
         if len(self.user.context) == 0:
             self.user.context.append(self.get_start_prompt())
+            self.user.context.append(self.get_start_bot_answer())
 
         if role == "user":
             self.user.context.append(message)
 
         elif role == "assistant":
-            pass
+            self.user.context.append(message)
+
+        self.user.update()
 
     def check_is_request(self) -> bool:
         pass
