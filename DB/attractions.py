@@ -36,13 +36,13 @@ class Attractions(SessionMaker):
         for res in results:
             attractions.append(
                 {
-                    "name": res.name.encode().decode(),
-                    "description": res.description.encode().decode(),
-                    "url": res.url.encode().decode(),
-                    "image": res.image.encode().decode(),
-                    "location": res.location.encode().decode(),
+                    "name": res.name,
+                    "description": res.description,
+                    "url": res.url,
+                    "image": res.image,
+                    "location": res.location,
                 }
             )
             print(res.name)
-
-        return attractions
+        print(attractions)
+        return attractions[:10]

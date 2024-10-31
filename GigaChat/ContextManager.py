@@ -36,14 +36,16 @@ class ContextManager(Prompts):
                     return True, self.user.context
 
                 else:
+                    prompt = self.get_user_prompt()
+                    attractions = prompt + json.dumps(attractions, ensure_ascii=False)
                     self.user.context.append(
                         {
                             "role": "user",
-                            "content": json.dumps(attractions),
+                            "content": attractions,
                         }
                     )
                     self.user.update()
-                    return False, self.user.context
+                    return True, self.user.context
 
             self.user.context.append(message)
 
@@ -87,3 +89,6 @@ class ContextManager(Prompts):
             words = words[1:]
 
         return words
+
+    def get_user_prompt(self):
+        return """Я хочу составить туристический маршрут по местам, которые я перечислю ниже. Пожалуйста, учти их расположение, время на посещение и возможные интересные мероприятия или достопримечательности в каждом месте. Также постарайся сделать маршрут логичным и удобным для путешествия. Вот список мест:\n"""

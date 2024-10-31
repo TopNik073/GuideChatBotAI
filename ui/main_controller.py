@@ -48,6 +48,7 @@ async def main_controller(user: User, GG: GigaChat, text: str):
             for i in range(5):
                 if make_additional_request:
                     answer = await GG.generate_answer(context)
+                    print(answer)
                     make_additional_request, context = manager.add_message(role="assistant", text=answer["content"])
 
                 if not make_additional_request:

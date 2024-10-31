@@ -20,7 +20,7 @@ GG = GigaChat()
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        text=Prompts().get_start_bot_answer(),
+        text=Prompts().get_start_bot_answer(True),
     )
 
 

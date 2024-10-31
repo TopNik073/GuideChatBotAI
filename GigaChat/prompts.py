@@ -10,9 +10,12 @@ class Prompts:
 
         return start_prompt
 
-    def get_start_bot_answer(self):
+    def get_start_bot_answer(self, start: bool = False):
         with open("GigaChat/prompts/start_bot_answer.txt", encoding="utf8") as file:
             start_bot_answer = file.read()
+
+        if start:
+            return start_bot_answer
 
         start_bot_answer = {
             "role": "assistant",
