@@ -19,6 +19,10 @@ load_dotenv()
 GG = GigaChat()
 
 
+async def log_startup(context: ContextTypes.DEFAULT_TYPE):
+    print("Bot started!")
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     with open("ui/start_image.jpg", "rb") as image_file:
         await context.bot.send_photo(
@@ -74,5 +78,7 @@ if __name__ == "__main__":
 
     application.add_handler(msg_handler)
     application.add_handler(start_handler)
+
+    application.job_queue.run_once(log_startup, when=0)
 
     application.run_polling()
