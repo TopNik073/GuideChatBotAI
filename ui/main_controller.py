@@ -9,7 +9,7 @@ from ui.locale import *
 
 async def main_controller(user: User, GG: GigaChat, text: str):
     try:
-        if text == CREATE_NEW_TRIP_TEXT and user.available_trips != 0:
+        if text == CREATE_NEW_TRIP_TEXT:
             user.context = []
             user.available_trips -= 1
             user.update()
@@ -19,25 +19,8 @@ async def main_controller(user: User, GG: GigaChat, text: str):
                 "rm": get_create_new_trip_btn(),
             }
 
-        elif text == CREATE_NEW_TRIP_TEXT and user.available_trips == 0:
-            return {
-                "text": get_pay_text(),
-                "rm": get_pay_btn(),
-            }
-
-        elif text == PAY_BTN_TEXT:
-            user.available_trips += 1
-            user.update()
-            return {
-                "text": get_on_pay_text(),
-            }
 
         else:
-            if user.available_trips == 0:
-                return {
-                "text": get_pay_text(),
-                "rm": get_pay_btn(),
-            }
             manager: ContextManager = ContextManager(user)
             manager.add_message("user", text)
 
