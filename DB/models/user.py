@@ -1,4 +1,4 @@
-from source.database.models.Base import Base
+from DB.models.Base import Base
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import JSONB
 
@@ -10,12 +10,13 @@ class Users(Base):
 
     repr_cols = ("name",)
 
-    user_id: Mapped[int] = mapped_column(primary_key=True)
-
-    firstname: Mapped[str] = mapped_column(unique=False)
-    surname: Mapped[str] = mapped_column(nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    firstname: Mapped[str] = mapped_column(nullable=True)
+    surname: Mapped[str] = mapped_column(nullable=True)
     username: Mapped[str] = mapped_column(nullable=True)
 
     context: Mapped[list[dict]] = mapped_column(JSONB, nullable=True)
+    available_trips: Mapped[int] = mapped_column(nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
