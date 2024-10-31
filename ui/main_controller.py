@@ -15,7 +15,7 @@ async def main_controller(user: User, GG: GigaChat, text: str):
             user.update()
 
             return {
-                "text": "Отлично, давайте создадим новую поездку!",
+                "text": "Отлично, давайте создадим создадим ваше новое увлекательное путешествие!",
                 "rm": get_create_new_trip_btn(),
             }
 
