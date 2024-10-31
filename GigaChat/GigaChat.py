@@ -27,6 +27,7 @@ class GigaChat:
                 },
                 data={"scope": "GIGACHAT_API_CORP"},
                 verify=False,
+                timeout=15.0,
             )
 
             if response.status_code != 200:
@@ -60,11 +61,12 @@ class GigaChat:
                         "messages": content,
                         "stream": False,
                         "repetition_penalty": 1,
-                        "temperature": 0.1,
+                        "temperature": 0.3,
                         "top_p": 0.1,
                     }
                 ),
                 verify=False,
+                timeout=15.0,
             )
 
             if response.status_code != 200:

@@ -43,12 +43,28 @@ async def main_controller(user: User, GG: GigaChat, text: str):
 
             answer = await GG.generate_answer(user.context)
 
-            manager.add_message(answer["role"], answer["content"])
+            make_additional_request, context = manager.add_message(answer["role"], answer["content"])
+            flag_add_request = True
+            for i in range(5):
+                if make_additional_request:
+                    answer = await GG.generate_answer(context)
+                    make_additional_request, context = manager.add_message(role="assistant", text=answer["content"])
 
-            return {
-                "text": answer["content"],
-                "rm": get_create_new_trip_btn(),
-            }
+                if not make_additional_request:
+                    flag_add_request = False
+                    break
+
+            if not flag_add_request:
+                return {
+                    "text": answer["content"],
+                    "rm": get_create_new_trip_btn(),
+                }
+
+            else:
+                return {
+                    "text": get_not_found_text(),
+                    "rm": get_create_new_trip_btn(),
+                }
 
     except Exception as e:
         print(e)
@@ -90,3 +106,10 @@ def get_on_pay_text():
 Давайте начнем создание вашей новой поездки. 🗺✨ 
 
 Снова расскажите нам о ваших предпочтениях к путешествию 😊🗓"""
+
+def get_not_found_text():
+    return """К сожалению, в данный момент мы не можем найти подходящие достопримечательности для вашей программы поездки по Калининградской области. 😔
+
+Если у вас есть конкретные пожелания или вопросы, пожалуйста, сообщите! Мы готовы помочь вам в организации вашего путешествия. 🌍✨
+
+Благодарим за понимание! 🙏"""
