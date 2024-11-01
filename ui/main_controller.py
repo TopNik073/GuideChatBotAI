@@ -15,7 +15,7 @@ async def main_controller(user: User, GG: GigaChat, text: str):
             user.update()
 
             return {
-                "text": "Отлично, давайте создадим создадим ваше новое увлекательное путешествие!",
+                "text": "Отлично, давайте создадим ваше новое увлекательное путешествие!",
                 "rm": get_create_new_trip_btn(),
             }
 
@@ -52,7 +52,6 @@ async def main_controller(user: User, GG: GigaChat, text: str):
 
     except Exception as e:
         print(e)
-
         return {"text": "Извините, что-то пошло не так", "rm": get_create_new_trip_btn()}
 
 def get_create_new_trip_btn():

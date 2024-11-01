@@ -45,4 +45,4 @@ class Attractions(SessionMaker):
             )
             print(res.name)
         print(attractions)
-        return attractions[:10]
+        return attractions[:15]

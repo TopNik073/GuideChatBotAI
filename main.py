@@ -46,19 +46,19 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE, gg
 
         response = await main_controller(user, gg, update.message.text)
 
+        print(len(response["text"]))
+
         if response.get("rm") is not None:
             await context.bot.send_message(
                 chat_id=update.message.chat_id,
                 text=response["text"],
                 reply_markup=response.get("rm"),
-                parse_mode="Markdown",
             )
         else:
             await context.bot.send_message(
                 chat_id=update.message.chat_id,
                 text=response["text"],
                 reply_markup=ReplyKeyboardRemove(),
-                parse_mode="Markdown",
             )
     except Exception as e:
         print(e)
@@ -66,7 +66,6 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE, gg
                 chat_id=update.message.chat_id,
                 text="Извините, что-то пошло не так",
                 reply_markup=get_create_new_trip_btn(),
-                parse_mode="Markdown",
             )
 
 
